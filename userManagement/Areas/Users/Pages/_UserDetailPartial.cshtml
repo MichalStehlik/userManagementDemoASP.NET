@@ -1,0 +1,15 @@
+﻿@model Data.ApplicationUser
+<div>
+    <dl>
+        <dt>Jméno a příjmení</dt>
+        <dd>@Model.FullName </dd>
+        <dt>Id</dt>
+        <dd>@Model.Id </dd>
+        <dt>Pohlaví</dt>
+        <dd>@(Model.Gender == 0 ? "Muž" : "Žena") </dd>
+        <dt>Uživatelské jméno</dt>
+        <dd>@Model.UserName </dd>
+        <dt>Email</dt>
+        <dd>@Model.Email </dd>
+    </dl>
+</div>

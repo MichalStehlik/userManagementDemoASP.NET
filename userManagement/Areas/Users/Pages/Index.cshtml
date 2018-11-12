@@ -1,0 +1,89 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Seznam uživatelů";
+}
+<partial name="_StatusMessage" for="StatusMessage" />
+<h2>Seznam uživatelů</h2>
+<div><a class="btn btn-success m-1" asp-area="Users" asp-page="/Create">Nový</a></div>
+@if (Model.Users.Count == 0)
+{
+    <p>Žádní uživatelé nejsou.</p>
+}
+else
+{
+    <form class="form-inline p-1" asp-page="./Index" method="get">
+        <label class="mr-sm-2" for="searchString">Jméno a příjmení</label>
+        <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="searchString" name="searchString" placeholder="část jména" value="@Model.NameFilter">
+        <button type="submit" class="btn btn-primary">Vybrat</button>
+        <a class="btn btn-light" asp-page="./Index">Vše</a>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.FirstNameSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Users[0].FirstName)
+                    </a>
+                </th>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.LastNameSort"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        @Html.DisplayNameFor(model => model.Users[0].LastName)
+                    </a>
+                </th>
+                <th>@Html.DisplayNameFor(model => model.Users[0].UserName)</th>
+                <th>@Html.DisplayNameFor(model => model.Users[0].Gender)</th>
+                <th>Akce</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.UserName</td>
+                    <td>
+                        @if (user.Gender == 0)
+                        {
+                            <span>Muž</span>
+                        }
+                        else
+                        {
+                            <span>Žena</span>
+                        }
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm" asp-page="./Details" asp-route-id="@user.Id">Podrobnosti</a>
+                        <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-id="@user.Id">Upravit</a>
+                        <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@user.Id">Odstranit</a>
+                        <a class="btn btn-light btn-sm" asp-page="./Password" asp-route-id="@user.Id">Heslo</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    var prevDisabled = !Model.Users.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Users.HasNextPage ? "disabled" : "";
+
+    <div class="btn-group">
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Users.PageIndex - 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-light @prevDisabled">
+        Předchozí
+    </a>
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Users.PageIndex + 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-light @nextDisabled">
+        Další
+    </a>
+    </div>
+}

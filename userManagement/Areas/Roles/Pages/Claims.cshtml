@@ -1,0 +1,31 @@
+﻿@page
+@model ClaimsModel
+@{
+    ViewData["Title"] = "Claimy";
+}
+<h2>Přiřazení claimu roli</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h4>Nový claim</h4>
+            <hr />
+            <input type="hidden" asp-for="Input.Role" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Type"></label>
+                <input asp-for="Input.Type" class="form-control" />
+                <span asp-validation-for="Input.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Value"></label>
+                <input asp-for="Input.Value" class="form-control" />
+                <span asp-validation-for="Input.Value" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Uložit</button> <a class="btn" asp-page="Index">Zpět</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

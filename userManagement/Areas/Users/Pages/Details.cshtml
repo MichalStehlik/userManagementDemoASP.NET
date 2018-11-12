@@ -1,0 +1,111 @@
+﻿@page
+@model DetailsModel
+@{
+    ViewData["Title"] = "Informace o uživateli";
+}
+
+<h2>Detail uživatele</h2>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Osobní data</h3>
+        <dl>
+            <dt>Jméno a příjmení</dt>
+            <dd>@Model.UserVM.FirstName @Model.UserVM.LastName </dd>
+            <dt>Id</dt>
+            <dd>@Model.UserVM.Id </dd>
+            <dt>Pohlaví</dt>
+            <dd>@(Model.UserVM.Gender == 0 ? "Muž" : "Žena") </dd>
+            <dt>Uživatelské jméno</dt>
+            <dd>@Model.UserVM.UserName </dd>
+            <dt>Email</dt>
+            <dd>@Model.UserVM.Email </dd>
+            <dt>Potvrzený Email</dt>
+            <dd>@Model.UserVM.EmailConfirmed </dd>
+            <dt>Telefon</dt>
+            <dd>@Model.UserVM.PhoneNumber </dd>
+            <dt>Potvrzené telefonní číslo</dt>
+            <dd>@Model.UserVM.PhoneNumberConfirmed </dd>
+            <dt>Počet špatně zadaných hesel</dt>
+            <dd>@Model.UserVM.AccessFailedCount </dd>
+            <dt>Blokování účtu</dt>
+            <dd>@(Model.UserVM.LockoutEnabled ? "Ano" : "Ne") </dd>
+            @if (Model.UserVM.LockoutEnd != null)
+            {
+                <dt>Ban</dt>
+                <dd>@Model.UserVM.LockoutEnd </dd>
+            }
+        </dl>
+    </div>
+    <div class="col-md-6">
+        <h3>Oprávnění</h3>
+        <h4>Role</h4>
+        @if (Model.UserVM.AllRoles.Count > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Název</th>
+                        <th>Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.UserVM.AllRoles)
+                    {
+                        <tr>
+                            <td><a asp-area="Roles" asp-page="\Details" asp-route-id="@r.Id">@r.Name</a></td>
+                            <td>
+                                @if (Model.UserVM.Roles.Contains(r.Name))
+                                {
+                                    <a class="btn btn-danger btn-sm" asp-page-handler="remove" asp-route-user="@Model.UserVM.Id" asp-route-role="@r.Id">Odstranit</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-success btn-sm" asp-page-handler="join" asp-route-user="@Model.UserVM.Id" asp-route-role="@r.Id">Přidat</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>V systému nejsou žádné role.</p>
+        }
+        <h4>Claimy</h4>
+        <div>
+            <a class="btn btn-success btn-sm" asp-page="Claims" asp-route-id="@Model.UserVM.Id">Přidat</a>
+        </div>
+        @if (Model.UserVM.Claims.Count > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Druh</th>
+                        <th>Hodnota</th>
+                        <th>Vydavatel</th>
+                        <th>Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model.UserVM.Claims)
+                    {
+                        <tr>
+                            <td>@c.Type</td>
+                            <td>@c.Value</td>
+                            <td>@c.Issuer</td>
+                            <td><a class="btn btn-danger btn-sm" asp-page-handler="unclaim" asp-route-user="@Model.UserVM.Id" asp-route-type="@c.Type" asp-route-value="@c.Value">Odstranit</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Uživatel nemá žádné claimy.</p>
+        }
+    </div>
+</div>
+<div><a asp-page="./Index" class="btn btn-light">Zpět</a></div>

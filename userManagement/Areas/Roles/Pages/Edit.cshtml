@@ -1,0 +1,24 @@
+﻿@page
+@model EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<h2>Editace role</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdentityRole.Id" />
+            <div class="form-group">
+                <label asp-for="IdentityRole.Name"></label>
+                <input asp-for="IdentityRole.Name" class="form-control" />
+                <span asp-validation-for="IdentityRole.Name" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Uložit</button> <a class="btn" asp-page="Index">Zpět</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

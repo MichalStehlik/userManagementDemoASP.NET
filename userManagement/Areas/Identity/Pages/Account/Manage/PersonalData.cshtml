@@ -1,0 +1,24 @@
+﻿@page
+@model PersonalDataModel
+@{
+    ViewData["Title"] = "Osobní informace";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<div class="row">
+    <div class="col-md-6">
+        <p>Váš účet obsahuje osobní data. Tato stránka je umožňuje stáhnout na lokální počítač.</p>
+        <p>
+            <strong>Pokud se rozhodnete svá osobní data odstranit, dojde zároveň k odstranění celého Vašeho účtu.</strong>
+        </p>
+        <form asp-page="DownloadPersonalData" method="post" class="form-group">
+            <button class="btn btn-primary" type="submit">Stáhnout</button> <a asp-page="DeletePersonalData" class="btn btn-danger">Odstranit</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

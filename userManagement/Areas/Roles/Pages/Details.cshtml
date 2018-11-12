@@ -1,0 +1,51 @@
+﻿@page
+@model DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+<h2>Detail role</h2>
+<div class="row">
+    <div class="col-md-6">
+        <h3>Role</h3>
+        <dl>
+            <dt>Název</dt>
+            <dd>@Model.Role.Name</dd>
+            <dt>Id</dt>
+            <dd>@Model.Role.Id </dd>
+        </dl>
+    </div>
+    <div class="col-md-6">
+        <h3>Claimy</h3>
+        <a class="btn btn-success btn-sm" asp-page="Claims" asp-route-id="@Model.Role.Id">Přidat</a>
+        @if (Model.Claims.Count() > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Druh</th>
+                        <th>Hodnota</th>
+                        <th>Vydavatel</th>
+                        <th>Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var claim in Model.Claims)
+                    {
+                        <tr>
+                            <td>@claim.Type</td>
+                            <td>@claim.Value</td>
+                            <td>@claim.Issuer</td>
+                            <td><a class="btn btn-danger btn-sm" asp-page-handler="unclaim" asp-route-role="@Model.Role.Id" asp-route-type="@claim.Type" asp-route-value="@claim.Value">Odstranit</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <p>Tato role nemá žádné claimy.</p>
+        }
+    </div>
+</div>
+<div><a class="btn" asp-page="Index">Zpět</a></div>

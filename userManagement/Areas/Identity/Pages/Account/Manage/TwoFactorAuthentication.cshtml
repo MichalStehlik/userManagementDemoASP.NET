@@ -1,0 +1,56 @@
+﻿@page
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "Dvoufázové ověření (2FA)";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h4>@ViewData["Title"]</h4>
+@if (Model.Is2faEnabled)
+{
+    if (Model.RecoveryCodesLeft == 0)
+    {
+        <div class="alert alert-danger">
+            <strong>Nemáte žádné ověřovací kódy.</strong>
+            <p>Musíte <a asp-page="./GenerateRecoveryCodes">si nechat vygenerovat novou sadu</a>.</p>
+        </div>
+    }
+    else if (Model.RecoveryCodesLeft == 1)
+    {
+        <div class="alert alert-danger">
+            <strong>Máte poslední kód.</strong>
+            <p>Asi byste si <a asp-page="./GenerateRecoveryCodes">měl nechat vygenerovat novou sadu</a>.</p>
+        </div>
+    }
+    else if (Model.RecoveryCodesLeft <= 3)
+    {
+        <div class="alert alert-warning">
+            <strong>Máte @Model.RecoveryCodesLeft kódy.</strong>
+            <p>Můžete si nechat <a asp-page="./GenerateRecoveryCodes">vygenerovat novou sadu kódů</a>.</p>
+        </div>
+    }
+
+    if (Model.IsMachineRemembered)
+    {
+        <form method="post" style="display: inline-block">
+            <button type="submit" class="btn btn-default">Forget this browser</button>
+        </form>
+    }
+    <a asp-page="./Disable2fa" class="btn btn-default">Disable 2FA</a>
+    <a asp-page="./GenerateRecoveryCodes" class="btn btn-default">Reset recovery codes</a>
+}
+
+<h5>Aplikace autentikátoru</h5>
+@if (!Model.HasAuthenticator)
+{
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Přidat autentikátor</a>
+}
+else
+{
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Nastavit autentikátor</a>
+    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-danger">Resetovat autentikátor</a>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

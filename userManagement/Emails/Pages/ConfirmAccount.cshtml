@@ -1,0 +1,18 @@
+﻿@using userManagement.Emails.ViewModels
+@model ConfirmEmailViewModel
+@{
+    ViewData["Title"] = "Vítejte";
+}
+@if (Model.User.Gender == userManagement.Data.Gender.Male)
+{
+    <p>Milý uživateli,</p>
+}
+else
+{
+    <p>Milá uživatelko,</p>
+}
+<p>Váš účet v naší aplikaci je téměř připraven. Zbývá už jen jeden drobný krůček: potvrdit existenci a vlastnictví Vámi uvedené emailové adresy. To lze učinit tlačítkem pod touto zprávou.</p>
+<p>Za registraci a potvrzení adresy předem děkujeme.</p>
+<div style="text-align:center">
+    <a style="display:inline-block; padding: 10px; text-decoration:none; color:white; background-color: green;" href="@Model.ConfirmEmailUrl">Potvrdit email</a>
+</div>

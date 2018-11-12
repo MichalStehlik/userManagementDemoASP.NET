@@ -1,0 +1,14 @@
+﻿@page
+@model DeleteModel
+@{
+}
+<h2>Odstranění uživatele</h2>
+<h3>Opravdu chcete uživatele odstranit?</h3>
+<partial name="_UserDetailPartial" for="@Model.ApplicationUser" />
+<div>
+    <form method="post">
+        <input type="hidden" asp-for="ApplicationUser.Id" />
+        <input type="submit" value="Odstranit" class="btn btn-danger" />
+        <a asp-page="./Index" class="btn btn-light">Zpět</a>
+    </form>
+</div>
